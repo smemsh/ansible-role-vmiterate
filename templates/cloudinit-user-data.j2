@@ -1,0 +1,111 @@
+#cloud-config
+#
+# user-data for cloud-init
+#   {{ansible_managed}}
+#
+# - yaml format
+# - cloud-init requires first line comment to identify its metaformat
+# - we do just enough to get instance bootstrapped for 'config' user
+# - thereafter, config layer takes over (in our case, ansible)
+#
+---
+
+disable_ec2_metadata:     true
+package_update:           false
+package_upgrade:          false
+resize_rootfs:            false
+disable_root:             false
+lock_passwd:              false
+preserve_hostname:        false
+ssh_pwauth:               false
+locale:                   '{{vm_locale}}'
+timezone:                 '{{vm_timezone}}'
+rsyslog:                  [{content: "*.debug /var/log/messages"}]
+
+# - manage_resolv_conf does not work at all (module is not even
+#   configured in the image's cloud.cfg, and if we do add it, there's
+#   a python error)
+# - manage_etc_hosts uses $hostname and the /etc/cloud/templates
+#   version is broken if we make that an fqdn (adds .localdomain, also
+#   makes 127.0.0.1 instead of real static ip), which we want it to be
+#
+manage_etc_hosts:         false
+manage_resolv_conf:       false
+hostname:                 '{{ip_fqdn}}'
+fqdn:                     '{{ip_fqdn}}'
+
+# we just inject /etc/hosts and /etc/resolv.conf ourselves since we
+# have all information we need and these are very simple to make.
+# remember also, these are only for bootstrap until ansible takes over
+# (after which we will disable cloud-init entirely)
+#
+bootcmd:
+  - |
+    cat << % >/etc/hosts
+    127.0.0.1 localhost.localdomain localhost
+    {{ip_address}} {{ip_fqdn}} {{vm_name}}
+    {{ip_gateway}} {{cfmgmt_fqdn}} {{cfmgmt_host}}
+    %
+  - |
+    cat << % >/etc/resolv.conf
+    nameserver {{ip_gateway}}
+    %
+
+###
+
+users:
+
+  - name:                 '{{cfmgmt_user}}'
+    shell:                '/bin/bash'
+
+    homedir:              '{{cfmgmt_homedir}}'
+    no_create_home:       true  # do it ourselves so empty skeleton
+
+    plain_text_passwd:    '{{cfmgmt_password}}'
+    lock_passwd:          false
+
+    sudo:                 'ALL=(ALL) NOPASSWD:ALL'
+    ssh_authorized_keys:  ['{{ssh_auth_pubstrs[ssh_auth_md5]}}']
+
+runcmd:
+
+  # make the configuration management user home directory
+  # we want it: (1) empty, (2) on root filesystem
+  # note: it should NOT make tmpfiles herein (maybe ro rootfs)
+  # note: ssh_authorized_keys makes homedir despite no_create_home
+  #       but it will be root-owned, so we use mkdir -p here
+  #
+  - 'mkdir -p {{cfmgmt_homedir}}'
+  - 'chown -R {{cfmgmt_user}}:{{cfmgmt_user}} {{cfmgmt_homedir}}'
+  - 'chmod 0700 {{cfmgmt_homedir}}'
+
+  # eliminate any dain bramaged vendor shell pollution
+  #
+  - 'rm -f /etc/profile'
+  - 'rm -f /etc/bash.bashrc'
+  - 'rm -f /etc/bashrc'
+  - 'rm -f /etc/bash_profile'
+
+ssh_keys:
+
+  # ssh_host_pubstr -- a string read directly from keyfile with ansible
+  # lookup('file') -- contains real newlines, which we have to encode
+  # for the far-side yaml (which will read these after templatization),
+  # so we have to escape them in the near-side yaml string literal
+  #
+  rsa_private:
+    "{{
+      ssh_host_pubstrs[hostkey_md5] |
+      regex_replace('\n', '\\\\n')
+    }}"
+
+  # whereas the private keyfile ssh-keygen creates is always a single
+  # line, making it unnecessary to do the same thing here
+  #
+  rsa_public: '{{ssh_host_pubstr}}'
+
+  # server will generate dsa and ecdsa hostkeys in init script, which we
+  # don't care about, configured to only use rsa client-side)
+  # TODO: make sure .ssh/config has this!
+
+# EOF

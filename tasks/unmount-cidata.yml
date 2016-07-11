@@ -1,0 +1,16 @@
+#
+# unmounts cidata filesystem
+# (iff it's mounted)
+# (aborts on errors, ie filesystem in use)
+#
+---
+
+- name: test_cidev_mounted
+  command: 'findmnt --source {{lvpath_cidata}}'
+  failed_when: false
+  changed_when: false
+  register: ret_ci_mounted
+
+- name: unmount_cidata_if_mounted
+  command: 'umount {{lvpath_cidata}}'
+  when: ret_ci_mounted.rc == 0

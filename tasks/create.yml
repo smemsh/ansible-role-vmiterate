@@ -1,0 +1,6 @@
+
+# name: pause_before_create
+# pause: ~
+
+- include: create-cidata.yml
+- include: create-vm.yml

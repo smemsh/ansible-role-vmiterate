@@ -1,0 +1,32 @@
+#
+# creates ephemeral virtual machine
+#   - create thin snapshot of base image as defined in config
+#   - define vm using templatized libvirt xml
+#   - includes cidata drive for cloud-config
+#   - defines the domain using libvirt
+#   - now ready to run (with configured name and at hostname)
+---
+
+# cannot do this way until is #2216 pulled
+#   or until #2478 (mine) is addressed
+#
+# name: create_cloud_image_thin_snapshot
+# lvol:
+#   lv: '{{lvname_origin}}'
+#   vg: '{{vgname}}'
+#   snapshot: '{{lvname_snap}}'
+#   state: present
+#
+- name: create_cloud_image_thin_snapshot
+  command: >
+    lvcreate
+      --snapshot
+      --name {{lvname_snap}}
+      {{vgname}}/{{lvname_origin}}
+
+- name: define_virtual_machine
+  virt:
+    name: '{{vm_name}}'
+    command: define
+    xml: |
+      {{lookup('template', 'virtimg.xml.j2')}}

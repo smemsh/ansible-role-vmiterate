@@ -1,0 +1,51 @@
+#
+# vmiterate
+#   dev vm iteration: automates destroy, create, provision
+#
+# desc:
+#   - provisions from lv with base images written onto them
+#   - creates thin snapshot from the image as base for vm
+#   - creates vm from snapshot using libvirt kvm
+#   - creates cloud-init cidata volume with meta-data and user-data
+#   - provisions vm using cloud-init to bootstrap for ansible
+#   - (complete the system configuration via ssh using another role)
+#
+# tested:
+#   - centos6 and ubuntu14 generic cloud images (from vendor)
+#   - vendor images only had size fixed, dhcp disabled before writing to lv
+#
+# steps:
+#   - thin volume
+#   - virtual machine
+#   - static network
+#   - system locale
+#   - rsa hostkey
+#   - config superuser
+#   - ssh authkey
+#   - rest left to cfmgmt
+#
+# status:
+#   - used by author to instantiate vms for testing devops
+#   - please notify author if using
+#   - some aspects specific to author environment (see vars/vars,defs)
+#
+# todo:
+#   - factor into roles
+#   - split create and destroy (tags?)
+#   - enumerate assumptions / prerequisites
+#   - document endpoint, what state machine is in
+#   - publish
+#   - gce, lxc, linode, ec2
+#
+# scott@smemsh.net
+# http://smemsh.net/src/ansible-role-vmiterate
+# http://spdx.org/licenses/AGPL-3.0
+#
+---
+
+- include_vars: secrets.yml
+- include_vars: config.yml
+
+- include: sanity.yml
+- include: destroy.yml
+- include: create.yml

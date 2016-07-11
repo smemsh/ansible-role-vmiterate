@@ -1,0 +1,32 @@
+#
+# composite variables created from site-local values in config.yml
+# (defined by role, generally not for edit)
+#
+---
+
+vm_name:            '{{host}}'
+
+vgpath:             '/dev/mapper/{{vgname}}'
+
+lvname_origin:      '{{hostvars[host].lvbase}}{{lv_origin_suffix}}'
+lvname_snap:        '{{hostvars[host].lvbase}}{{lv_snap_suffix}}'
+lvname_cidata:      '{{hostvars[host].lvbase}}{{lv_cidata_suffix}}'
+lvname_rootfs:      '{{lvname_snap}}p1' # after kpartx for outside mount
+
+lvpath_origin:      '{{vgpath}}-{{lvname_origin}}'
+lvpath_snap:        '{{vgpath}}-{{lvname_snap}}'
+lvpath_cidata:      '{{vgpath}}-{{lvname_cidata}}'
+lvpath_fspart:      '{{vgpath}}-{{lvname_rootfs}}'
+
+cfmgmt_fqdn:        '{{cfmgmt_host}}.{{domain}}'
+cfmgmt_password:    '{{secret_cfmgmt_password}}'
+cfmgmt_homedir:     '{{cfmgmt_homeloc}}/{{cfmgmt_user}}'
+
+ip_host:            '{{vm_subnet | ipaddr(hostvars[host].ip_offset)}}'
+ip_address:         "{{ip_host | ipaddr('address')}}"
+ip_network:         "{{ip_host | ipaddr('network')}}"
+ip_netmask:         "{{ip_host | ipaddr('netmask')}}"
+ip_broadcast:       "{{ip_host | ipaddr('broadcast')}}"
+ip_gateway:         "{{ip_host | ipaddr(1) | ipaddr('address')}}"
+ip_domain:          '{{domain}}'
+ip_fqdn:            '{{host}}.{{domain}}'

@@ -1,0 +1,24 @@
+#
+# variable definitions that differ by site
+# (for edit by user)
+#
+---
+
+cfmgmt_user:        config          # configuration management superuser name
+cfmgmt_host:        omnigate        # short reverse, incoming control connects
+cfmgmt_homeloc:     '/home'         # parent, configuration management homedir
+
+vm_ram:             512             # megabytes for the vm images
+vm_locale:          en_US.UTF-8     # locale for cloud-init
+vm_timezone:        US/Pacific      # timezone for cloud-init
+
+vm_network:         default         # libvirt subnet name (sysadmin created)
+vm_subnet:          '10.128.132/22' # libvirt subnet address and prefix
+
+vgname:             omnius          # volume group where images to be found
+thinpool:           'pool0'         # thin pool for snapping ephemeral vms
+
+lv_origin_suffix:   _thin0          # lvbase suffix, cloud image origin lv
+lv_snap_suffix:     _thin1          # lvbase suffix, thin snaps for iteration
+lv_cidata_suffix:   _cidata2        # lvbase suffix, cloud-init cidata volume
+lv_cidata_size:     '4M'            # size of vfat lv for cloud-init cidata

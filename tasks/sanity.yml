@@ -1,0 +1,12 @@
+#
+# sanity checks
+#
+---
+
+- name: verify_vm_arg_given
+  fail: ~
+  when: host is undefined
+
+- name: verify_vmhost_in_hostvars
+  fail: ~
+  when: hostvars[host] is undefined

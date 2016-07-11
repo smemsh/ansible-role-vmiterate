@@ -1,0 +1,32 @@
+#
+# destroys and undefines the virtual machine
+# (if it already exists)
+#
+---
+
+# name: pause_before_destroy
+# pause: ~
+
+- name: enumerate_existing_vms
+  virt:
+    command: list_vms
+  register: ret_vms
+
+- name: test_vm_exists
+  set_fact:
+    vm_exists: "{{
+      (vm_name in ret_vms.list_vms) |
+        ternary(true, false)
+    }}"
+
+- name: destroy_virtual_machine
+  virt:
+    name: '{{vm_name}}'
+    state: destroyed
+  when: vm_exists
+
+- name: undefine_virtual_machine
+  virt:
+    name: '{{vm_name}}'
+    command: undefine
+  when: vm_exists

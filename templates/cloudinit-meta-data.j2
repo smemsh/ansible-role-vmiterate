@@ -1,0 +1,38 @@
+#
+# metadata for cloud-init
+#   {{ansible_managed}}
+#
+---
+
+instance-id: iid-{{vm_name}}0
+hostname: {{vm_name}}
+
+# note: default vendor cloud images ship with dhcp enabled,
+# which we disable manually inside the image before stamping
+# them into the clone-base device:
+#
+#   - centos6: sed -i /ONBOOT/s,yes,no, /etc/sysconfig/net*/ifcfg-eth0
+#   - ubunutu14: rename '' . /etc/network/interfaces.d/eth0
+#
+# otherwise, they start dhcp on first boot, which:
+#
+#   - requires us to need a dhcp server running in the virt
+#     net to avoid lengthy timeout waiting for lease, even if
+#     we set static IPs in the cloud-config
+#
+#   - leaves a stale dhclient laying around until reboot
+#     (since static network defined here in meta-data does get
+#     put onto the system by cloud-config, but it doesn't know
+#     to stop dhcp)
+#
+#   - changes contents of resolv.conf, which we inject
+#     ourselves due to manage_resolv_conf brokenness (see 'user-data')
+#
+network-interfaces: |
+    auto eth0   # 'auto' only needed on ubuntu
+    iface eth0 inet static
+    address {{ip_address}}
+    network {{ip_network}}
+    netmask {{ip_netmask}}
+    broadcast {{ip_broadcast}}
+    gateway {{ip_gateway}}
