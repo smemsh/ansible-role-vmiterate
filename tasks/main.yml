@@ -27,7 +27,7 @@
 # status:
 #   - used by author to instantiate vms for testing devops
 #   - please notify author if using
-#   - some aspects specific to author environment (see vars/vars,defs)
+#   - some aspects specific to author env, will break out if needed
 #
 # todo:
 #   - factor into roles
