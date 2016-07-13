@@ -78,8 +78,8 @@ configured in group/host variables.
        :lvbase: variable part of origin lvname (`config.yml` for static parts)
        :secret_cfmgmt_password: password for cm user (fill from vault/crypt)
 
-   see http://smemsh.net/src/.ansible/group_vars/smemsh for a
-   clever way to provide the keys using files with the name of
+   see http://smemsh.net/src/.ansible/group_vars/smemsh for one
+   possible way to provide the keys using files with the name of
    the host and its md5 via `lookup('file')` in the playbook
    `files/`, or just add them manually
 
