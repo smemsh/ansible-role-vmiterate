@@ -61,6 +61,11 @@ details, which need to be passed into the role via playbook, or
 configured in group/host variables.
 
 #. edit `vars/config.yml`_
+#. provide a `secrets.yml` somewhere in play, inventory, or role
+   `vars/` dir, which is read in for configuration management
+   user's password variable `secret_cfmgmt_password`.  this is
+   for logging in via serial console.  ssh password logins are
+   disabled in `cloud-init` configuration.
 #. define the following variables (presumably via host/group vars):
 
        :domain: dns domain for the VMs
