@@ -12,7 +12,7 @@ allows for easy migration from local VMs to system containers or
 to cloud VMs: they would all use the same images, bootstrap
 method, and configuration tool.
 
-Tested using CentOS and Ubuntu generic cloud images.
+Tested using CentOS and Ubuntu vendor cloud images.
 
 | scott@smemsh.net
 | http://smemsh.net/src/ansible-role-vmiterate
@@ -40,6 +40,7 @@ preparation
 The cloud image must have been written beforehand (using eg
 `qemu-img -O raw`) onto an LVM thin volume which the role will
 snapshot (and make anew on each re-run) for each VM iteration.
+
 Any changes to the base image that should be in each iteration
 (and cannot be specified in the role's `meta-data` or
 `user-data` templates) should be put into the origin LV.
@@ -48,7 +49,8 @@ This role as written uses static IPs (subnet and host offsets
 are configured via ansible variables), so we disable DHCP in our
 cloud images.  The root filesystem backing device is also
 expanded manually in the origin images used to test this role,
-but no other changes were made to vendor-provided cloud images.
+but no other changes are needed for vendor-provided cloud
+images.
 
 
 configuration
