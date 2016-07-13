@@ -81,7 +81,8 @@ configured in group/host variables.
    see http://smemsh.net/src/.ansible/group_vars/smemsh for one
    possible way to provide the keys using files with the name of
    the host and its md5 via `lookup('file')` in the playbook
-   `files/`, or just add them manually
+   `files/`, or just add them manually as strings.  make sure to
+   encrypt private keys (author uses `git-crypt` in source repo).
 
    see http://smemsh.net/src/.ansible/host_vars/ubuplex for an
    example per-guest hostvars
