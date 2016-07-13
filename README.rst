@@ -61,7 +61,7 @@ details, which need to be passed into the role via playbook, or
 configured in group/host variables.
 
 #. edit `vars/config.yml`_
-#. define the following via host or group vars:
+#. define the following variables (presumably via host/group vars):
 
        :domain: dns domain for the VMs
        :hostkey_md5: md5 fingerprint of rsa hostkey (lower, no colons)
@@ -79,7 +79,7 @@ configured in group/host variables.
    `files/`, or just add them manually
 
    see http://smemsh.net/src/.ansible/host_vars/ubuplex for an
-   example hostvars
+   example per-guest hostvars
 
 .. _vars/config.yml: vars/config.yml
 
