@@ -31,8 +31,7 @@ template).
 A configuration management user is created in the VM, and made
 available to the host for login via ssh on the configured
 virtual network.  The VM is now ready for the CM tool to
-complete system configuration, in a separate role. *(TODO:
-link)*
+complete system configuration, in a separate role.
 
 
 preparation
@@ -50,13 +49,6 @@ are configured via ansible variables), so we disable DHCP in our
 cloud images.  The root filesystem backing device is also
 expanded manually in the origin images used to test this role,
 but no other changes were made to vendor-provided cloud images.
-
-*TODO*: no reason to expand manually since cloud-init can resize
-the filesystem; right now we expect manual and disable resize in
-user-data
-
-*TODO*: provide example `wget`, `guestfish`, `lvm` commands to
-download and prepare an image for instantiation via playbook run.
 
 
 configuration
@@ -86,13 +78,6 @@ configured in group/host variables.
 
    see http://smemsh.net/src/.ansible/host_vars/ubuplex for an
    example hostvars
-
-*TODO*: provide these as a defaults/main.yml instead and source
-config.yml for overrides, or maybe just expect them given via
-role args only (but, their number should be reduced first if so)
-
-*TODO*: possibly move some site-local stuff from config.yml into
-host/group vars
 
 .. _vars/config.yml: vars/config.yml
 
@@ -134,11 +119,7 @@ following provisioning events to occur once the VM gets booted:
     - config superuser
     - ssh authkey
 
-*TODO*: these steps should correspond to tags for
-short-circuiting.
-
-Configuration inside the VM is left to a separate role (TODO:
-publish one and link to it)
+Configuration inside the VM is left to a separate role
 
 invocation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -162,5 +143,11 @@ todo
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 - split create and destroy (tags?)
+- provide and link to configuration roles
 - followup roles that configure base packages, create user, do other stuff
 - gce, lxd, linode, ec2
+- no reason to expand fs manually since cloud-init can resize it
+- provide example `wget`, `guestfish`, `lvm` commands to get/write image
+- move some possible site-local from config.yml into host/group vars
+- use defaults.yml so config.yml can be used for overrides only?
+- reduce variables needing configuration and/or expect them in role args
