@@ -65,7 +65,11 @@ users:
     lock_passwd:          false
 
     sudo:                 'ALL=(ALL) NOPASSWD:ALL'
-    ssh_authorized_keys:  ['{{ssh_auth_pubstrs[ssh_auth_md5]}}']
+
+    # todo: once #16714 fixed, use ssh_auth_pubstrs[ssh_auth_md5]
+    #       (also see notes in rsa_private todo, herein)
+    #
+    ssh_authorized_keys:  ['{{ssh_auth_pubstr}}']
 
 runcmd:
 
@@ -88,19 +92,27 @@ runcmd:
 
 ssh_keys:
 
-  # ssh_host_pubstr -- a string read directly from keyfile with ansible
+  # ssh_host_keystr -- a string read directly from keyfile with ansible
   # lookup('file') -- contains real newlines, which we have to encode
   # for the far-side yaml (which will read these after templatization),
   # so we have to escape them in the near-side yaml string literal
   #
+  # todo: once #16714 fixed
+  #   - use ssh_host_keystrs[ssh_host_md5]
+  #   - edit group_vars/smemsh (see todo)
+  #   - also edit rsa_public herein
+  #
   rsa_private:
     "{{
-      ssh_host_pubstrs[hostkey_md5] |
+      ssh_host_keystr |
       regex_replace('\n', '\\\\n')
     }}"
 
   # whereas the private keyfile ssh-keygen creates is always a single
   # line, making it unnecessary to do the same thing here
+  #
+  # todo: once #16714 fixed, use ssh_host_pubstrs[ssh_host_md5]
+  #       (also see notes in rsa_private todo, herein)
   #
   rsa_public: '{{ssh_host_pubstr}}'
 
