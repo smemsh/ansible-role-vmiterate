@@ -6,7 +6,7 @@
 #   - cidata filesystem and volume
 ---
 
-- include: destroy-vm.yml
-- include: unmount-cidata.yml
-- include: unmount-vmroot.yml
-- include: remove-lvols.yml
+- import_tasks: destroy-vm.yml
+- import_tasks: unmount-cidata.yml
+- import_tasks: unmount-vmroot.yml
+- import_tasks: remove-lvols.yml

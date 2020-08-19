@@ -46,6 +46,6 @@
 - include_vars: secrets.yml
 - include_vars: config.yml
 
-- include: sanity.yml
-- include: destroy.yml
-- include: create.yml
+- import_tasks: sanity.yml
+- import_tasks: destroy.yml
+- import_tasks: create.yml
