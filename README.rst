@@ -142,8 +142,6 @@ used to take several variables out of hostvars[host] (see
 status
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-- used by author to instantiate vms for testing devops
-- please notify author if using
 - some aspects specific to author environment (edit vars/config.yml)
 
 
