@@ -38,7 +38,7 @@
 #   - gce, lxc, linode, ec2
 #
 # scott@smemsh.net
-# http://smemsh.net/src/ansible-role-vmiterate
+# https://github.com/smemsh/ansible-role-vmiterate
 # http://spdx.org/licenses/AGPL-3.0
 #
 ---

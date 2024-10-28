@@ -15,7 +15,7 @@ method, and configuration tool.
 Tested using CentOS and Ubuntu vendor cloud images.
 
 | scott@smemsh.net
-| http://smemsh.net/src/ansible-role-vmiterate
+| https://github.com/smemsh/ansible-role-vmiterate
 | http://spdx.org/licenses/AGPL-3.0
 
 
@@ -78,13 +78,13 @@ configured in group/host variables.
        :lvbase: variable part of origin lvname (`config.yml` for static parts)
        :secret_cfmgmt_password: password for cm user (fill from vault/crypt)
 
-   see http://smemsh.net/src/.ansible/group_vars/smemsh for one
+   see https://github.com/smemsh/.ansible/group_vars/smemsh for one
    possible way to provide the keys using files with the name of
    the host and its md5 via `lookup('file')` in the playbook
    `files/`, or just add them manually as strings.  make sure to
    encrypt private keys (author uses `git-crypt` in source repo).
 
-   see http://smemsh.net/src/.ansible/host_vars/ubuplex for an
+   see https://github.com/smemsh/.ansible/host_vars/ubuplex for an
    example per-guest hostvars
 
 .. _vars/config.yml: vars/config.yml
