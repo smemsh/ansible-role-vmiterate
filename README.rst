@@ -16,7 +16,7 @@ Tested using CentOS and Ubuntu vendor cloud images.
 
 | scott@smemsh.net
 | https://github.com/smemsh/ansible-role-vmiterate
-| http://spdx.org/licenses/GPL-2.0
+| https://spdx.org/licenses/GPL-2.0
 
 
 result
