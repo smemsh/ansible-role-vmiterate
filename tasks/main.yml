@@ -24,11 +24,6 @@
 #   - ssh authkey
 #   - rest left to cfmgmt
 #
-# status:
-#   - used by author to instantiate vms for testing devops
-#   - please notify author if using
-#   - some aspects specific to author env, will break out if needed
-#
 # todo:
 #   - factor into roles
 #   - split create and destroy (tags?)
